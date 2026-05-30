@@ -1,0 +1,37 @@
+# FinGuard AI — locked infra versions (PostgreSQL 16, Redis 7)
+# Usage: docker compose up -d
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: finguard-postgres
+    environment:
+      POSTGRES_USER: finguard
+      POSTGRES_PASSWORD: finguard
+      POSTGRES_DB: finguard
+    ports:
+      - "5432:5432"
+    volumes:
+      - finguard_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U finguard -d finguard"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: finguard-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - finguard_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  finguard_pg_data:
+  finguard_redis_data:
