@@ -69,4 +69,4 @@ finguard-ai/
 
 ## Current phase
 
-**Phase 1 — `users` (complete):** model, schemas, repository, service, API (`/api/v1/users`), pytest. Next: **Phase 2 — `customers`** on `feature/customers`. No other tables until each phase is committed.
+**Phase 5 — `cases` (complete):** model, schemas, repository, service, API (`/api/v1/cases`), migration `0005`, pytest. Next: **Phase 6 — `documents`**.
