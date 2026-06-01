@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
-import { login } from '../api/auth'
+import { useAuth } from '../context/AuthContext'
 
 export default function LoginForm(){
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [msg, setMsg] = useState<string | null>(null)
+  const auth = useAuth()
 
   async function submit(e: React.FormEvent){
     e.preventDefault()
     try{
-      await login({ email, password })
-      setMsg('Logged in (token stored in sessionStorage)')
+      await auth.login(email, password)
+      setMsg('Logged in')
     }catch(err:any){
       setMsg(err?.message || 'Login failed')
     }
