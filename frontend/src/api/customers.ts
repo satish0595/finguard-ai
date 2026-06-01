@@ -8,3 +8,11 @@ export async function listCustomers(){
 export async function getCustomer(id:string){
   return await request(`/customers/${id}`)
 }
+
+export async function createCustomer(payload: any){
+  return await request('/customers', { method: 'POST', body: JSON.stringify(payload) })
+}
+
+export async function updateCustomer(id:string, payload:any){
+  return await request(`/customers/${id}`, { method: 'PUT', body: JSON.stringify(payload) })
+}

@@ -6,6 +6,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import hash_password
+from app.core.security import verify_password
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
 from app.schemas.user import UserCreate, UserUpdate
@@ -68,3 +69,11 @@ class UserService:
     async def delete_user(self, user_id: uuid.UUID) -> None:
         user = await self.get_user(user_id)
         await self._repo.delete(user)
+
+    async def authenticate_user(self, email: str, password: str) -> User | None:
+        user = await self._repo.get_by_email(email)
+        if not user:
+            return None
+        if not verify_password(password, user.hashed_password):
+            return None
+        return user
