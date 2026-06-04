@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 
-export default function LoginForm(){
+export default function LoginForm({ onSuccess }: { onSuccess?: () => void }){
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [msg, setMsg] = useState<string | null>(null)
@@ -12,6 +12,7 @@ export default function LoginForm(){
     try{
       await auth.login(email, password)
       setMsg('Logged in')
+      onSuccess?.()
     }catch(err:any){
       setMsg(err?.message || 'Login failed')
     }

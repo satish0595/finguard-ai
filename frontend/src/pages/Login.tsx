@@ -1,11 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import LoginForm from '../components/LoginForm'
+import { useAuth } from '../context/AuthContext'
 
 export default function Login() {
+  const auth = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const from = (location.state as any)?.from?.pathname || '/'
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      navigate(from, { replace: true })
+    }
+  }, [auth.isAuthenticated, from, navigate])
+
   return (
     <div className="container">
       <h2>Login</h2>
-      <LoginForm />
+      <LoginForm onSuccess={() => navigate(from, { replace: true })} />
     </div>
   )
 }
