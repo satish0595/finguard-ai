@@ -12,6 +12,7 @@ export default function NavBar(){
         <Link to="/transactions">Transactions</Link>
         {auth.isAuthenticated ? (
           <>
+            <Link to="/account">Account</Link>
             <span style={{marginLeft:8}}>{auth.user?.email}</span>
             <button style={{marginLeft:8}} onClick={auth.logout}>Logout</button>
           </>

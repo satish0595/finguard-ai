@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Customers from './pages/Customers'
 import Transactions from './pages/Transactions'
+import Account from './pages/Account'
 import NavBar from './components/NavBar'
 import RequireAuth from './components/RequireAuth'
 
@@ -28,6 +29,14 @@ export default function App() {
             element={
               <RequireAuth>
                 <Transactions />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/account"
+            element={
+              <RequireAuth>
+                <Account />
               </RequireAuth>
             }
           />
