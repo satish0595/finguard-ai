@@ -14,5 +14,9 @@ export async function createTransaction(payload: any){
 }
 
 export async function updateTransaction(id:string, payload:any){
-  return await request(`/transactions/${id}`, { method: 'PUT', body: JSON.stringify(payload) })
+  return await request(`/transactions/${id}`, { method: 'PATCH', body: JSON.stringify(payload) })
+}
+
+export async function deleteTransaction(id:string){
+  return await request(`/transactions/${id}`, { method: 'DELETE' })
 }

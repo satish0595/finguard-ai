@@ -1,28 +1,40 @@
 import React, { useEffect, useState } from 'react'
-import { listTransactions } from '../api/transactions'
+import { deleteTransaction, listTransactions } from '../api/transactions'
 import TransactionForm from '../components/TransactionForm'
+import TransactionList from '../components/TransactionList'
 
 export default function Transactions() {
   const [items, setItems] = useState<any[]>([])
-
-  useEffect(() => {
-    listTransactions().then(r => setItems(r || []))
-  }, [])
+  const [editing, setEditing] = useState<any | null>(null)
 
   async function refresh(){
     const r = await listTransactions()
     setItems(r || [])
   }
 
+  useEffect(() => {
+    refresh()
+  }, [])
+
+  async function handleDelete(id:string){
+    await deleteTransaction(id)
+    refresh()
+  }
+
+  function handleEdit(item:any){
+    setEditing(item)
+  }
+
+  function handleSaved(){
+    setEditing(null)
+    refresh()
+  }
+
   return (
     <div className="container">
       <h2>Transactions</h2>
-      <TransactionForm onSaved={refresh} />
-      <ul>
-        {items.map(t => (
-          <li key={t.id}>{t.amount} {t.currency} — {t.external_reference}</li>
-        ))}
-      </ul>
+      <TransactionForm transaction={editing || undefined} onSaved={handleSaved} onCancel={() => setEditing(null)} />
+      <TransactionList items={items} onEdit={handleEdit} onDelete={handleDelete} />
     </div>
   )
 }

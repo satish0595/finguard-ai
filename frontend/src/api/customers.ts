@@ -14,5 +14,9 @@ export async function createCustomer(payload: any){
 }
 
 export async function updateCustomer(id:string, payload:any){
-  return await request(`/customers/${id}`, { method: 'PUT', body: JSON.stringify(payload) })
+  return await request(`/customers/${id}`, { method: 'PATCH', body: JSON.stringify(payload) })
+}
+
+export async function deleteCustomer(id:string){
+  return await request(`/customers/${id}`, { method: 'DELETE' })
 }
