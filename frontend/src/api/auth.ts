@@ -1,4 +1,4 @@
-import { API_BASE } from './client'
+import { API_BASE, request } from './client'
 
 export async function login(payload: { email: string; password: string }){
   const form = new URLSearchParams()
@@ -21,4 +21,8 @@ export async function login(payload: { email: string; password: string }){
 
 export function logout(){
   sessionStorage.removeItem('token')
+}
+
+export async function register(payload: { email: string; password: string; full_name?: string }){
+  return await request('/users', { method: 'POST', body: JSON.stringify(payload) })
 }

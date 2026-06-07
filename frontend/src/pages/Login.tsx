@@ -19,6 +19,9 @@ export default function Login() {
     <div className="container">
       <h2>Login</h2>
       <LoginForm onSuccess={() => navigate(from, { replace: true })} />
+      <p style={{marginTop: 16}}>
+        Don't have an account? <a href="/signup">Sign up here</a>
+      </p>
     </div>
   )
 }

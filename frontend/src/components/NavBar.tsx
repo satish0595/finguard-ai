@@ -17,7 +17,10 @@ export default function NavBar(){
             <button style={{marginLeft:8}} onClick={auth.logout}>Logout</button>
           </>
         ) : (
-          <Link to="/login">Login</Link>
+          <>
+            <Link to="/login">Login</Link>
+            <Link to="/signup">Sign Up</Link>
+          </>
         )}
       </div>
     </nav>
