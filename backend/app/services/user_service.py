@@ -70,6 +70,15 @@ class UserService:
         user = await self.get_user(user_id)
         await self._repo.delete(user)
 
+    async def get_user_by_email(self, email: str) -> User:
+        user = await self._repo.get_by_email_case_insensitive(email)
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found",
+            )
+        return user
+
     async def authenticate_user(self, email: str, password: str) -> User | None:
         user = await self._repo.get_by_email(email)
         if not user:

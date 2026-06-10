@@ -49,6 +49,15 @@ async def test_get_user_not_found(client):
 
 
 @pytest.mark.asyncio
+async def test_get_user_by_email(client):
+    await client.post("/api/v1/users", json=USER_PAYLOAD)
+    response = await client.get("/api/v1/users/by-email", params={"email": USER_PAYLOAD["email"]})
+    assert response.status_code == 200
+    body = response.json()
+    assert body["email"] == USER_PAYLOAD["email"]
+
+
+@pytest.mark.asyncio
 async def test_list_users(client):
     await client.post("/api/v1/users", json=USER_PAYLOAD)
     await client.post(

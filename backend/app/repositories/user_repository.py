@@ -21,6 +21,13 @@ class UserRepository:
         )
         return result.scalar_one_or_none()
 
+    async def get_by_email_case_insensitive(self, email: str) -> User | None:
+        normalized_email = email.strip().lower()
+        result = await self._session.execute(
+            select(User).where(func.lower(User.email) == normalized_email)
+        )
+        return result.scalar_one_or_none()
+
     async def list_users(self, *, skip: int = 0, limit: int = 100) -> list[User]:
         result = await self._session.execute(
             select(User).order_by(User.created_at.desc()).offset(skip).limit(limit)
