@@ -22,6 +22,18 @@ function ScrollToTop() {
 export default function App() {
   return (
     <div>
+      <div
+        style={{
+          background: '#2563eb',
+          color: 'white',
+          padding: '8px 16px',
+          textAlign: 'center',
+          fontSize: '14px',
+          fontWeight: 600,
+        }}
+      >
+        ✨ New: smoother page transitions and clearer navigation help.
+      </div>
       <NavBar />
       <main style={{ padding: 20 }}>
         <ScrollToTop />
