@@ -1,5 +1,5 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
@@ -9,11 +9,22 @@ import Account from './pages/Account'
 import NavBar from './components/NavBar'
 import RequireAuth from './components/RequireAuth'
 
+function ScrollToTop() {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [pathname])
+
+  return null
+}
+
 export default function App() {
   return (
     <div>
       <NavBar />
       <main style={{ padding: 20 }}>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -41,6 +52,10 @@ export default function App() {
                 <Account />
               </RequireAuth>
             }
+          />
+          <Route
+            path="*"
+            element={<div style={{ paddingTop: 24 }}>Page not found. Go back home to continue.</div>}
           />
         </Routes>
       </main>
