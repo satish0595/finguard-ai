@@ -32,7 +32,7 @@ export default function App() {
           fontWeight: 600,
         }}
       >
-        ✨ New: smoother page transitions and clearer navigation help.
+        ✨ Updated: navigation cues and transitions feel more polished across the app.
       </div>
       <NavBar />
       <main style={{ padding: 20 }}>
