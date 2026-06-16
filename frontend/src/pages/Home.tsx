@@ -44,15 +44,15 @@ export default function Home() {
 
       <section className="feature-grid">
         <article className="card">
-          <h3>Customer insight</h3>
+          <h3>👤 Customer insight</h3>
           <p>Keep customer details, history, and investigations in one accessible place.</p>
         </article>
         <article className="card">
-          <h3>Transaction review</h3>
+          <h3>💳 Transaction review</h3>
           <p>Track high-risk movements and review the context behind each event quickly.</p>
         </article>
         <article className="card">
-          <h3>Alert workflow</h3>
+          <h3>⚠️ Alert workflow</h3>
           <p>Move from alert to case management with a simple, focused workflow.</p>
         </article>
       </section>
