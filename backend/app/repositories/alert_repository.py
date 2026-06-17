@@ -5,7 +5,7 @@ import uuid
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.alert import Alert, AlertStatus
+from app.models.alert import Alert, AlertSeverity, AlertStatus
 
 
 class AlertRepository:
@@ -46,6 +46,7 @@ class AlertRepository:
         *,
         customer_id: uuid.UUID | None = None,
         status: AlertStatus | None = None,
+        severity: AlertSeverity | None = None,
         assigned_to: uuid.UUID | None = None,
     ) -> int:
         stmt = select(func.count()).select_from(Alert)
@@ -53,6 +54,8 @@ class AlertRepository:
             stmt = stmt.where(Alert.customer_id == customer_id)
         if status is not None:
             stmt = stmt.where(Alert.status == status)
+        if severity is not None:
+            stmt = stmt.where(Alert.severity == severity)
         if assigned_to is not None:
             stmt = stmt.where(Alert.assigned_to == assigned_to)
         result = await self._session.execute(stmt)

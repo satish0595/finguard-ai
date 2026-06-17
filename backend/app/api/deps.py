@@ -7,6 +7,7 @@ from app.db.session import get_db
 from app.services.alert_service import AlertService
 from app.services.audit_log_service import AuditLogService
 from app.services.case_service import CaseService
+from app.services.dashboard_service import DashboardService
 from app.services.customer_service import CustomerService
 from app.services.document_service import DocumentService
 from app.services.policy_chunk_service import PolicyChunkService
@@ -42,6 +43,10 @@ def get_document_service(session: AsyncSession = Depends(get_db)) -> DocumentSer
 
 def get_audit_log_service(session: AsyncSession = Depends(get_db)) -> AuditLogService:
     return AuditLogService(session)
+
+
+def get_dashboard_service(session: AsyncSession = Depends(get_db)) -> DashboardService:
+    return DashboardService(session)
 
 
 def get_policy_chunk_service(session: AsyncSession = Depends(get_db)) -> PolicyChunkService:

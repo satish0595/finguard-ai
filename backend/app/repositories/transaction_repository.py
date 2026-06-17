@@ -5,7 +5,7 @@ import uuid
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.transaction import Transaction
+from app.models.transaction import Transaction, TransactionStatus
 
 
 class TransactionRepository:
@@ -39,10 +39,17 @@ class TransactionRepository:
         result = await self._session.execute(stmt)
         return list(result.scalars().all())
 
-    async def count(self, *, customer_id: uuid.UUID | None = None) -> int:
+    async def count(
+        self,
+        *,
+        customer_id: uuid.UUID | None = None,
+        status: TransactionStatus | None = None,
+    ) -> int:
         stmt = select(func.count()).select_from(Transaction)
         if customer_id is not None:
             stmt = stmt.where(Transaction.customer_id == customer_id)
+        if status is not None:
+            stmt = stmt.where(Transaction.status == status)
         result = await self._session.execute(stmt)
         return int(result.scalar_one())
 

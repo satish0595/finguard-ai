@@ -5,7 +5,7 @@ import uuid
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.case import Case, CaseStatus
+from app.models.case import Case, CasePriority, CaseStatus
 
 
 class CaseRepository:
@@ -46,6 +46,7 @@ class CaseRepository:
         *,
         customer_id: uuid.UUID | None = None,
         status: CaseStatus | None = None,
+        priority: CasePriority | None = None,
         assigned_to: uuid.UUID | None = None,
     ) -> int:
         stmt = select(func.count()).select_from(Case)
@@ -53,6 +54,8 @@ class CaseRepository:
             stmt = stmt.where(Case.customer_id == customer_id)
         if status is not None:
             stmt = stmt.where(Case.status == status)
+        if priority is not None:
+            stmt = stmt.where(Case.priority == priority)
         if assigned_to is not None:
             stmt = stmt.where(Case.assigned_to == assigned_to)
         result = await self._session.execute(stmt)

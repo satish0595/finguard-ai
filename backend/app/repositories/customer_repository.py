@@ -5,7 +5,7 @@ import uuid
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.customer import Customer
+from app.models.customer import Customer, CustomerStatus, RiskLevel
 
 
 class CustomerRepository:
@@ -36,10 +36,18 @@ class CustomerRepository:
         )
         return list(result.scalars().all())
 
-    async def count(self) -> int:
-        result = await self._session.execute(
-            select(func.count()).select_from(Customer)
-        )
+    async def count(
+        self,
+        *,
+        risk_level: RiskLevel | None = None,
+        status: CustomerStatus | None = None,
+    ) -> int:
+        stmt = select(func.count()).select_from(Customer)
+        if risk_level is not None:
+            stmt = stmt.where(Customer.risk_level == risk_level)
+        if status is not None:
+            stmt = stmt.where(Customer.status == status)
+        result = await self._session.execute(stmt)
         return int(result.scalar_one())
 
     async def add(self, customer: Customer) -> Customer:
