@@ -1,9 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { getDashboardSummary, type DashboardSummary } from '../api/dashboard'
 import { useAuth } from '../context/AuthContext'
 
 export default function Home() {
   const auth = useAuth()
+  const [summary, setSummary] = useState<DashboardSummary | null>(null)
+  const [summaryError, setSummaryError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let active = true
+
+    getDashboardSummary()
+      .then((data) => {
+        if (active) setSummary(data)
+      })
+      .catch((error: unknown) => {
+        if (!active) return
+        setSummaryError(error instanceof Error ? error.message : 'Unable to load stats')
+      })
+
+    return () => {
+      active = false
+    }
+  }, [])
 
   return (
     <div className="home-page">
@@ -55,6 +75,45 @@ export default function Home() {
           <h3>⚠️ Alert workflow</h3>
           <p>Move from alert to case management with a simple, focused workflow.</p>
         </article>
+      </section>
+
+      <section className="summary-strip">
+        <div className="summary-heading">
+          <h3>Live platform snapshot</h3>
+          <p>A quick read on what the monitoring workspace is tracking right now.</p>
+        </div>
+        {summary ? (
+          <div className="summary-grid">
+            <article className="summary-item">
+              <span>Customers</span>
+              <strong>{summary.customers_total}</strong>
+            </article>
+            <article className="summary-item">
+              <span>High-risk</span>
+              <strong>{summary.customers_high_risk}</strong>
+            </article>
+            <article className="summary-item">
+              <span>Pending review</span>
+              <strong>{summary.customers_pending_review}</strong>
+            </article>
+            <article className="summary-item">
+              <span>Open alerts</span>
+              <strong>{summary.open_alerts}</strong>
+            </article>
+            <article className="summary-item">
+              <span>Critical alerts</span>
+              <strong>{summary.critical_alerts}</strong>
+            </article>
+            <article className="summary-item">
+              <span>Open cases</span>
+              <strong>{summary.open_cases}</strong>
+            </article>
+          </div>
+        ) : (
+          <div className="summary-fallback">
+            <span>{summaryError || 'Loading snapshot...'}</span>
+          </div>
+        )}
       </section>
 
       <section className="status-card">
