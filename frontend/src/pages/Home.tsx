@@ -7,22 +7,26 @@ export default function Home() {
   const auth = useAuth()
   const [summary, setSummary] = useState<DashboardSummary | null>(null)
   const [summaryError, setSummaryError] = useState<string | null>(null)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null)
+
+  const loadSummary = async () => {
+    setIsRefreshing(true)
+
+    try {
+      const data = await getDashboardSummary()
+      setSummary(data)
+      setSummaryError(null)
+      setLastUpdated(new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }))
+    } catch (error: unknown) {
+      setSummaryError(error instanceof Error ? error.message : 'Unable to load stats')
+    } finally {
+      setIsRefreshing(false)
+    }
+  }
 
   useEffect(() => {
-    let active = true
-
-    getDashboardSummary()
-      .then((data) => {
-        if (active) setSummary(data)
-      })
-      .catch((error: unknown) => {
-        if (!active) return
-        setSummaryError(error instanceof Error ? error.message : 'Unable to load stats')
-      })
-
-    return () => {
-      active = false
-    }
+    void loadSummary()
   }, [])
 
   return (
@@ -78,11 +82,22 @@ export default function Home() {
       </section>
 
       <section className="summary-strip">
-        <div className="summary-heading">
-          <h3>Live platform snapshot</h3>
-          <p>A quick read on what the monitoring workspace is tracking right now.</p>
+        <div className="summary-heading-row">
+          <div className="summary-heading">
+            <h3>Live platform snapshot</h3>
+            <p>A quick read on what the monitoring workspace is tracking right now.</p>
+          </div>
+          <button
+            type="button"
+            className="summary-refresh"
+            onClick={() => void loadSummary()}
+            disabled={isRefreshing}
+          >
+            {isRefreshing ? 'Refreshing…' : 'Refresh'}
+          </button>
         </div>
         {summary ? (
+          <>
           <div className="summary-grid">
             <article className="summary-item">
               <span>Customers</span>
@@ -109,6 +124,10 @@ export default function Home() {
               <strong>{summary.open_cases}</strong>
             </article>
           </div>
+          <div className="summary-meta">
+            Last updated {lastUpdated ? `at ${lastUpdated}` : 'just now'}
+          </div>
+          </>
         ) : (
           <div className="summary-fallback">
             <span>{summaryError || 'Loading snapshot...'}</span>
