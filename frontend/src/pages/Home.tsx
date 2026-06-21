@@ -123,6 +123,10 @@ export default function Home() {
               <span>Open cases</span>
               <strong>{summary.open_cases}</strong>
             </article>
+            <article className="summary-item">
+              <span>Urgent cases</span>
+              <strong>{summary.urgent_cases}</strong>
+            </article>
           </div>
           <div className="summary-meta">
             Last updated {lastUpdated ? `at ${lastUpdated}` : 'just now'}
