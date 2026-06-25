@@ -24,15 +24,16 @@ export default function App() {
     <div>
       <div
         style={{
-          background: '#2563eb',
+          background: '#1d4ed8',
           color: 'white',
           padding: '8px 16px',
           textAlign: 'center',
           fontSize: '14px',
           fontWeight: 600,
+          letterSpacing: '0.02em',
         }}
       >
-        ✨ Small update: minor UI polish deployed.
+        ✨ Small update: a smoother experience is now live.
       </div>
       <NavBar />
       <main style={{ padding: 20 }}>
