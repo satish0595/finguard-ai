@@ -13,8 +13,8 @@ export default function NavBar(){
         {auth.isAuthenticated ? (
           <>
             <Link to="/account">Account</Link>
-            <span style={{marginLeft:8}}>{auth.user?.email}</span>
-            <button style={{marginLeft:8}} onClick={auth.logout}>Logout</button>
+            <span style={{marginLeft:8, fontSize:'0.9rem'}}>{auth.user?.email}</span>
+            <button style={{marginLeft:8, background:'none', border:'none', color:'#e2e8f0', cursor:'pointer', fontWeight:600, textDecoration:'underline'}} onClick={auth.logout}>Logout</button>
           </>
         ) : (
           <>
